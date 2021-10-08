@@ -10,11 +10,10 @@ module.exports = (service) => {
   // one to register
   
   router.post('/register', async (req, res, next) => {
-    //post method passing username and passwor to request body
-    //destructuring req body
-    const { username, password } = req.body
+
+    const { username,name, password } = req.body
     // call some service to register user  to get a token
-    const token = await service.registerUser(username, password)
+    const token = await service.registerUser(username, name,password)
     //if token is valid send back the token
     if (token) {
       res.send({ token: token })
@@ -38,6 +37,9 @@ module.exports = (service) => {
       res.status(400).send('Invalid login credentials')
     }
   })
+
+
+
 
   return router
 }

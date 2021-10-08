@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 //impor User Data model
-const User = require('../models/user')
+const User = require('../models/model-users')
 
 //salt rounds for ppl with similar password
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
@@ -25,13 +25,13 @@ module.exports = (db) => {
 
 
   // genertate token function takes in a unique id and 
-  service.generateToken = (uid) => {
+  service.generateToken = (user_id) => {
     // jwt.sign(payload=>{uid}, secret=>JWT_SECRET, options=>{expiresIn:JWT_EXPIRY})
-    return jwt.sign({ uid }, JWT_SECRET, { expiresIn: JWT_EXPIRY })
+    return jwt.sign({ user_id }, JWT_SECRET, { expiresIn: JWT_EXPIRY })
   }
 
   // a service that takes in a username to verify if it exist
-  service.registerUser = async (username, password) => {
+  service.registerUser = async (username,name, password) => {
     // we check in database if the user name exists
     const user = await db.findUserByUsername(username)
     //if exist user exist return null this function should be useless
@@ -43,11 +43,11 @@ module.exports = (db) => {
       //cryptographic function to return a haashed password, bcrypt to provide salt rounds
       const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
       //create a new User data model instance with a hashed password we never store unhased password in DBs
-      const newUser = new User({ username, password_hash: passwordHash })
+      const newUser = new User({ username, name, password_hash: passwordHash })
       //inserts the user into the database
       const user = await db.insertUser(newUser)
       //then we generate a new token for the user and return the token
-      return service.generateToken(user.id)
+      return service.generateToken(user.user_id)
     }
   }
 
@@ -56,7 +56,7 @@ module.exports = (db) => {
     if (user) {
       const isValid = await bcrypt.compare(password, user.password_hash)
       if (isValid) {
-        return service.generateToken(user.id)
+        return service.generateToken(user.user_id)
       }
     }
     return null
@@ -65,7 +65,7 @@ module.exports = (db) => {
   service.verifyToken = (token) => {
     try {
       const decoded = jwt.verify(token, JWT_SECRET)
-      return decoded.uid
+      return decoded.user_id
     } catch (err) {
       return null
     }

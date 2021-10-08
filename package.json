@@ -7,20 +7,25 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "db:migrate": "node scripts/migrate.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "consume": "node src/consumer.js",
+    "devcon": "nodemon src/consumer.js "
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.8.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "nodemon": "^2.0.13",
     "pg": "^8.7.1"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.15.8",
     "eslint": "^7.31.0"
   }
 }
