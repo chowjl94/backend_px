@@ -1,23 +1,33 @@
-require('dotenv').config()
-const WebSocket =require('ws')
-const PORT =8000
+const amqplib = require('amqplib')
+const cron = require('node-cron')
 
-const wsServer = new WebSocket.Server({
-    PORT:PORT
-})
+const express = require('express')
+
+const queue = 'heartbeat'
 
 
-wsServer.on('connection',function(socket){
-    console.log('Client Connected')
+//async function IIF
+;(async () => {
+  const client = await amqplib.connect('amqp://localhost:5672')
+  const channel = await client.createChannel()
 
-    socket.on('message',function(msg){
-        console.log('Received'+msg)
 
-        wsServer.clients.forEach(function(client){
-            client.send('someone said ' + msg)
-        })
+  await channel.assertQueue(queue)
+
+  setInterval(()=>{
+    const message = `I'm alive at ${new Date()}`
+    channel.sendToQueue(queue,Buffer.from(JSON.stringify(message)),{
+      contentType: 'application/json'
     })
-})
+  },60000)
+
+  cron.schedule('42 * * * *',()=>{
+    const message ='42 is the meaning to life!'
+    channel.sendToQueue(queue,Buffer.from(JSON.stringify(message)),{
+      contentType:'application/json'
+    })
+  })
 
 
-console.log('Server is listenning on '+ process.env.PRODUCER_PORT)
+})()
+

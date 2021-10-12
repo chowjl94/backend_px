@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/producer.js",
-    "consume": "node src/consumer.js"
+    "start": "node producer.js",
+    "consume": "node consumer.js",
+    "ws":"node app.js"
   },
   "keywords": [],
   "author": "",

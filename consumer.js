@@ -1,15 +1,33 @@
-require('dotenv').config()
-const WebSocket = require('ws')
-const fs = require('fs')
-const PORT = 5000
-const ws = new WebSocket(`ws://127.0.0.1:5000`)
+const amqplib = require('amqplib')
+const fs = require('fs') 
 
-ws.on('open',function(){
-    ws.send('Connected to Server')
-})
+//this queue name has to match the producer que name
+const queue = 'heartbeat'
+
+;(async () => {
 
 
-ws.on('message',function(msg){
-    console.log(msg.data)
-    // fs.appendFile('log.txt',msg.data + '\n\n')
-})
+
+  const client = await amqplib.connect('amqp://localhost:5672')
+  const channel = await client.createChannel()
+  await channel.assertQueue(queue)
+
+  channel.consume(queue, (msg) => {
+    try{
+
+      const data = JSON.parse(msg.content)
+
+      console.log(data)
+      var stream = fs.createWriteStream("log.txt", {flags:'a'})
+      stream.write(data+ "\n")
+      stream.end();
+      console.log('The "data to append" was appended to file!');
+
+      channel.ack(msg)
+    }catch(err){
+      console.log(err)
+      channel.nack(msg)
+    }
+
+  })
+})()
