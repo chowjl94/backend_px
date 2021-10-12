@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.js",
     "start": "node src/producer.js",
     "consume": "node src/consumer.js"
   },
@@ -15,17 +14,18 @@
   "dependencies": {
     "amqplib": "^0.8.0",
     "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "express": "^4.17.1",
     "express-ws": "^5.0.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.3",
     "node-cron": "^3.0.0",
-    "socket.io": "^4.1.3",
-    "socket.io-client": "^4.1.3"
+    "socket.io": "^4.2.0"
   },
   "devDependencies": {
     "jest": "^27.0.6",
-    "puppeteer": "^10.2.0"
+    "puppeteer": "^10.2.0",
+    "socket.io-client": "^4.2.0"
   }
 }
