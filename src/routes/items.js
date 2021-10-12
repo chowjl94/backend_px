@@ -5,12 +5,16 @@ module.exports = (db) => {
   const router = express.Router()
   
   router.post('/', async (req, res, next) => {
+    //this is the uid of the user
     const uid = req.uid
     const { name, quantity } = req.body
     const newItem = new Item({ name, quantity, uid })
     const item = await db.insertItem(newItem)
+    console.log(req.uid)
+
     res.status(201).send(item)
   })
+  
 
   router.get('/', async (req, res, next) => {
     const items = await db.findAllItems()
@@ -18,8 +22,9 @@ module.exports = (db) => {
   })
 
   router.get('/:id', async (req, res, next) => {
-    console.log('got item of id 3 from item')
+
     const id = req.params.id
+    console.log(`got item of id ${id} from item`)
     const item = await db.findItem(id)
     if (item) {
       res.send(item)
@@ -29,8 +34,9 @@ module.exports = (db) => {
   })
 
   router.get('/unique/:uid',async(req,res,next)=>{
-    console.log('yes')
+   
     const uid = req.params.uid
+    console.log(`got items uid ${uid} from item`)
     const items = await db.findAllUidItems(uid)
     console.log(items)
     if (items){

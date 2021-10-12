@@ -4,10 +4,7 @@ module.exports = (service) => {
   const router = express.Router()
 
 
-  //two routes
 
-
-  // one to register
   
   router.post('/register', async (req, res, next) => {
     //post method passing username and passwor to request body
