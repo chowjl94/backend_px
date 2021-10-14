@@ -1,0 +1,426 @@
+openapi: 3.0.0
+info:
+  title: Todo List APIs
+  description: Power X BE CAPSTONE
+  version: 1.0.0
+servers:
+  - url: "http://localhost:3001/"
+    description: local(dev)
+
+
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+    Login:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Todo:
+      type: object
+      required:
+        - title
+        - by
+        - created_on
+      properties:        
+        title:
+          type: string   
+        by:
+          type: string
+        created_on:
+          type: string
+          format: date
+        updated_by:
+          type: string
+        updated_on:
+          type: string
+          format: date
+    indivtask:
+      type: object
+      required:
+        - task_title
+      properties:
+        task_title:
+          type: string   
+        updated_by:
+          type: string
+        updated_on:
+          type: string
+          format: date
+        isFinished_on:
+          type: boolean
+  
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error: 
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []
+      
+paths:
+  /login:
+    post:
+      tags:
+      - auth
+      summary: Login a  Registered user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'   
+      responses:
+        200:
+          description: OK
+        400:
+          description: Username already exists
+  /register:
+    post:
+      tags:
+      - auth
+      summary: Register a user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'        
+      responses:
+        200:
+          description: OK
+        400:
+          description: Username already exists
+
+  /todo:
+    post:
+      tags:
+      - Todo
+      summary: Post a New Todo List
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'        
+    get:
+      tags:
+      - Todo
+      summary: Get all todos by current user
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+        400:
+          description: "this person has no list of todos"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+
+  /todo/{todo_id}:
+    get:
+      tags:
+      - Todo
+      summary: get a todolist based on the specified todo_id
+                    user has to be creator role or collaborator role
+      parameters:
+        - in: path
+          name: todo_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+        400:
+          description: "Enter Valid id Number or List of todos not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+        403:
+          description: "Neither Creator nor collaborator"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+    put:
+      tags:
+      - Todo
+      summary: update a todolist based on the specified todo_id
+                    user has to be creator role or collaborator role
+      parameters:
+        - in: path
+          name: todo_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+        400:
+          description: "Enter Valid id Number or List of todos not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+        403:
+          description: "Neither Creator nor collaborator"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - Todo
+      summary:  SOFT delete a todolist based on the specified todo_id
+                    user has to be creator role or collaborator role
+      parameters:
+        - in: path
+          name: todo_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        403:
+          description: Neither Creator or Collaborator
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        400:
+          description: "Enter Valid id Number or List of todos not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+   
+        404:
+          description: todo_id of  list not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /todos/share/{todo_id}:
+    post:
+      tags:
+      - Todo
+      summary:  Share todo list to another user
+      parameters:
+        - in: path
+          name: todo_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        403:
+          description: Neither Creator or Collaborator
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        400:
+          description: "Enter Valid id Number or List of todos not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+   
+        404:
+          description: todo_id of  list not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /indivtask/{todo_id}:
+    post:
+      tags:
+      - Individual Task
+      summary: Adding a task title to a existing todo list
+      parameters:
+        - in: path
+          name: todo_id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/indivtask'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/indivtask'
+        403:
+          description: Neither Creator or Collaborator
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        400:
+          description: "Enter Valid id Number or List of todos not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /indivtask/{task_id}:
+    put:
+      tags:
+      - Individual Task
+      summary: update a task based on the specified task_id
+                    user has to be creator role or collaborator role
+      parameters:
+        - in: path
+          name: task_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/indivtask'
+        400:
+          description: "Enter Valid id Number"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+        403:
+          description: "Neither Creator nor collaborator"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - Individual Task
+      summary:  SOFT delete a task based on the specified task_id
+                    user has to be creator role or collaborator role
+      parameters:
+        - in: path
+          name: task_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/indivtask'
+        403:
+          description: Neither Creator or Collaborator
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        400:
+          description: "Enter Valid id Number or List of todos not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+   
+  
+   
+           
+   
+
+
+  
