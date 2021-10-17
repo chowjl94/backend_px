@@ -2,8 +2,7 @@
 
 
 
-##### d3 (Extending CRUD app) branch day3
+##### d3 (Extending CRUD app) branch day3 see respective branch for more info
 
-##### d4 (websocket producer and consumer heartbeats) branch day4
+##### d4 (websocket producer and consumer heartbeats) branch day4 see respective branch for more info
 
-##### capstone (Implement a collaborative TODO-list application) branch capstone
