@@ -6,6 +6,8 @@ info:
 servers:
   - url: "http://localhost:3001/"
     description: local(dev)
+  - url: https://backend-capstone-px.herokuapp.com/
+    description: Production server
 
 
 
