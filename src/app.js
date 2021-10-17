@@ -9,7 +9,7 @@ module.exports = (router) => {
   const app = express()
   app.use(express.json())
   app.use(logger('common'))
-  app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerfile))
+  // app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerfile))
   app.use(router)
   
   app.use(OpenApiValidator.middleware({
@@ -19,7 +19,7 @@ module.exports = (router) => {
     validateResponses: true
   }))
 
-  
+  // app.use(router)
 
   app.use((err, req, res, next) => {
     // format error

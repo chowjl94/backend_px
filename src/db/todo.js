@@ -51,8 +51,8 @@ module.exports = (pool) => {
 
   db.updateTodo = async (todo_id, todo) => {
     const res = await pool.query(
-      'UPDATE todo SET title=$2,updated_by=$3,updated_on=$4 WHERE todo_id=$1 RETURNING *',
-      [todo_id, todo.title,todo.updated_by,todo.updated_on]
+      'UPDATE todo SET title=$2,updated_by=$3,updated_on=$4,soft_delete=$5 WHERE todo_id=$1 RETURNING *',
+      [todo_id, todo.title,todo.updated_by,todo.updated_on,todo.soft_delete]
     )
     return new Todo(res.rows[0])
   }

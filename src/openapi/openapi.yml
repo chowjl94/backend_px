@@ -67,13 +67,6 @@ components:
         isFinished_on:
           type: boolean
   
-    Error:
-      type: object
-      required:
-        - error
-      properties:
-        error: 
-          type: string
   securitySchemes:
     BearerAuth:
       type: http
@@ -83,23 +76,6 @@ security:
   - BearerAuth: []
       
 paths:
-  /login:
-    post:
-      tags:
-      - auth
-      summary: Login a  Registered user
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Login'   
-      responses:
-        200:
-          description: OK
-        400:
-          description: Username already exists
   /register:
     post:
       tags:
@@ -111,7 +87,31 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'        
+              $ref: '#/components/schemas/User' 
+            example:
+              username: 'malcom@gmail.com'   
+              name: 'malcom'
+              password: 'password1'    
+      responses:
+        200:
+          description: OK
+        400:
+          description: Username already exists
+  /login:
+    post:
+      tags:
+      - auth
+      summary: Login a  Registered user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login' 
+            example:
+                  email: malcom@gmail.com
+                  password: password1  
       responses:
         200:
           description: OK
@@ -129,6 +129,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Todo'
+            example:
+              title: 'Example todo'
+              by: 'Malcom'
+              created_on: 2021-10-17
+              updated_by: "Malcom"
+              updated_on: 2021-10-17
       responses:
         201:
           description: Created
@@ -149,14 +155,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Todo'
+                example:
+                - id: 
+                  title: 'todo list 1'
+                  by: 'John'
+                - id: 
+                  title: 'todo list 2'
+                  by: 'John'                  
         400:
           description: "this person has no list of todos"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
 
   /todo/{todo_id}:
     get:
@@ -179,22 +186,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Todo'
+              example:
+                todo_id: 1
+                title: 'Example todo'
+                by: 'Malcom'
+                uid: 2
+                created_on: 2021-10-17
+                updated_by: "Malcom"
+                updated_on: 2021-10-17
+                soft_delet: 'false'
         400:
           description: "Enter Valid id Number or List of todos not found"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+
         403:
           description: "Neither Creator nor collaborator"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+
     put:
       tags:
       - Todo
@@ -206,6 +212,18 @@ paths:
           schema:
             type: integer
           required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+            example:
+              title: 'Example todo'
+              updated_by: 'Malcom'
+              updated_on: 2021-10-17
+              soft_delete: 'false'
+
       responses:
         200:
           description: OK
@@ -215,22 +233,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Todo'
+              example:
+                todo_id: 1
+                title: 'Example todo'
+                by: 'Malcom'
+                uid: 2
+                created_on: 2021-10-17
+                updated_by: "Malcom"
+                updated_on: 2021-10-17
+                soft_delet: 'false'
         400:
           description: "Enter Valid id Number or List of todos not found"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+
         403:
           description: "Neither Creator nor collaborator"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+
     delete:
       tags:
       - Todo
@@ -249,27 +266,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Todo'
+              example:
+                todo_id: 1
+                title: 'Example todo'
+                by: 'Malcom'
+                uid: 2
+                created_on: 2021-10-17
+                updated_by: "Malcom"
+                updated_on: 2021-10-17
+                soft_delete: 'true'
         403:
           description: Neither Creator or Collaborator
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+
         400:
           description: "Enter Valid id Number or List of todos not found"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
    
         404:
           description: todo_id of  list not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+
   /todos/share/{todo_id}:
     post:
       tags:
@@ -281,34 +295,29 @@ paths:
           schema:
             type: integer
           required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+            example:
+              email: 'Watson@gmail.com'
+              name: 'watson'
+              role: 'read-only'
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Todo'
+          description: Share Request Sent     
+          
         403:
           description: Neither Creator or Collaborator
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+
         400:
           description: "Enter Valid id Number or List of todos not found"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
    
         404:
           description: todo_id of  list not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+
   /indivtask/{todo_id}:
     post:
       tags:
@@ -326,6 +335,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/indivtask'
+            example:
+              task_title: 'cut grass'
+              updated_on: 20/10/2021
       responses:
         201:
           description: Created
@@ -333,20 +345,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/indivtask'
+              example:
+                task_id: 2
+                todo_id: 2
+                task_title: 'clear trash'
+                updated_by: 'Malcom'
+                updated_on: 2021-10-17
+                soft_delete: 'false'
         403:
           description: Neither Creator or Collaborator
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+
         400:
           description: "Enter Valid id Number or List of todos not found"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+
   /indivtask/{task_id}:
     put:
       tags:
@@ -359,6 +370,18 @@ paths:
           schema:
             type: integer
           required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/indivtask'
+            example:
+              task_title: "take trash out"
+              updated_by: "Barry"
+              updated_on: 2021-10-21
+              isFinished: false
+
       responses:
         200:
           description: OK
@@ -368,22 +391,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/indivtask'
+              example:
+                task_id: 2
+                todo_id: 2
+                task_title: 'take trash out'
+                updated_by: 'Barry'
+                updated_on: 2021-11-21
+                isFinished: true
         400:
           description: "Enter Valid id Number"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+
         403:
           description: "Neither Creator nor collaborator"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+
     delete:
       tags:
       - Individual Task
@@ -402,20 +422,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/indivtask'
+              example:
+                task_id: 3
+                todo_id: 2
+                task_title: 'cut grass'
+                updated_by: 'Barry'
+                updated_on: 2021-10-17
+                soft_delete: true
         403:
           description: Neither Creator or Collaborator
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+
         400:
           description: "Enter Valid id Number or List of todos not found"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
+
    
   
    

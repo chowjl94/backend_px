@@ -6,90 +6,6 @@ module.exports = (db) => {
   const router = express.Router()
   function isInteger(n) { return /^\+?(0|[1-9]\d*)$/.test(n)}
 
-  /**
-   * @openapi
-   * components:
-   *  schemas:
-   *    indivtask:
-   *      type: object
-   *      required:
-   *        - task_title
-   *      properties:
-   *        task_title:
-   *          type: string   
-   *        updated_by:
-   *          type: string
-   *        updated_on:
-   *          type: string
-   *          format: date
-   *        isFinished_on:
-   *          type: boolean
-   */
-
-
-
-  /**
-   * @openapi
-   * components:
-   *  schemas:
-   *    Error:
-   *      type: object
-   *      required:
-   *        - error
-   *      properties:
-   *        error: 
-   *          type: string
-   */
-
-
-  /**
-   * @openapi
-   * /indivtask/:todo_id:
-   *  post:
-   *    tags:
-   *    - Individual Task
-   *    description: Adding a task title to a existing todo list
-   *    parameters:
-   *      - in: path
-   *        name: todo_id
-   *        schema:
-   *          type: integer
-   *        required: true
-   *    requestBody:
-   *      required: true
-   *      content:
-   *        application/json:
-   *          schema:
-   *            $ref: '#/components/schemas/indivtask'
-   *    responses:
-   *      201:
-   *        description: Created
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: '#/components/schemas/indivtask'
-   *      403:
-   *        description: Neither Creator or Collaborator
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: '#/components/schemas/Error'
-   *      400:
-   *        description: "Enter Valid id Number or List of todos not found"
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: array
-   *              items:
-   *                $ref: '#/components/schemas/Error'
-   * 
-   *    security:
-   *      - bearerAuth:
-   *          type: http
-   *          scheme: bearer
-   *          bearerFormat: JWT 
-   * 
-   */
   
   router.post('/:todo_id', async (req, res, next) => {
     const uid = req.uid
@@ -116,56 +32,6 @@ module.exports = (db) => {
   })
 
 
-
-    /**
-   * @openapi
-   * /indivtask/:task_id:
-   *  put:
-   *    tags:
-   *    - Individual Task
-   *    description: update a task based on the specified task_id
-   *                  user has to be creator role or collaborator role
-   *    parameters:
-   *      - in: path
-   *        name: task_id
-   *        schema:
-   *          type: integer
-   *        required: true
-   *    responses:
-   *      200:
-   *        description: OK
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: array
-   *              items:
-   *                $ref: '#/components/schemas/indivtask'
-   *      400:
-   *        description: "Enter Valid id Number"
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: array
-   *              items:
-   *                $ref: '#/components/schemas/Error'
-   *      403:
-   *        description: "Neither Creator nor collaborator"
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: array
-   *              items:
-   *                $ref: '#/components/schemas/Error'
-   * 
-   * 
-   *    security:
-   *      - bearerAuth:
-   *          type: http
-   *          scheme: bearer
-   *          bearerFormat: JWT 
-   * 
-   *         
-   */
 
 
   router.put('/:task_id', async (req, res, next) => {
@@ -194,51 +60,6 @@ module.exports = (db) => {
   })
 
 
-    /**
-   * @openapi
-   * /indivtask/:task_id:
-   *  delete:
-   *    tags:
-   *    - Individual Task
-   *    description:  SOFT delete a task based on the specified task_id
-   *                  user has to be creator role or collaborator role
-   *    parameters:
-   *      - in: path
-   *        name: task_id
-   *        schema:
-   *          type: integer
-   *        required: true
-   *    responses:
-   *      200:
-   *        description: OK
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: '#/components/schemas/indivtask'
-   *      403:
-   *        description: Neither Creator or Collaborator
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: '#/components/schemas/Error'
-   *      400:
-   *        description: "Enter Valid id Number or List of todos not found"
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: array
-   *              items:
-   *                $ref: '#/components/schemas/Error'
-   * 
-   * 
-   *    security:
-   *      - bearerAuth:
-   *          type: http
-   *          scheme: bearer
-   *          bearerFormat: JWT 
-   * 
-   */
-
   router.delete('/:task_id', async (req, res, next) => {
     const uid = req.uid
     console.log(uid)
@@ -257,7 +78,7 @@ module.exports = (db) => {
     if (role === null || role==='read-only'){
       res.status(403).json({error:`you are neither creator or collaboratro of todo list of id ${todo_id}`})
     }else{
-      const updatedTask = await db.doSoftDelete(task_id)
+      const updatedTask = await db.doSoftDeleteTask(task_id)
       res.status(200).json(updatedTask)
     } 
   })
