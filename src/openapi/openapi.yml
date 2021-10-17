@@ -112,7 +112,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Login' 
             example:
-                  email: malcom@gmail.com
+                  username: malcom@gmail.com
                   password: password1  
       responses:
         200:
