@@ -304,7 +304,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Todo'
             example:
-              email: 'Watson@gmail.com'
+              username: 'Watson@gmail.com'
               name: 'watson'
               role: 'read-only'
       responses:
