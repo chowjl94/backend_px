@@ -18,7 +18,8 @@ yarn-error.log*
 .vscode
 
 # Environment files
-.env*
+.env.*
+.env
 .env.example
 checklist.txt
 

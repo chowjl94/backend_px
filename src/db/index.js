@@ -1,10 +1,12 @@
 const { Pool } = require('pg')
+const fs = require('fs')
 
 // establish a connection string 
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
 })
+
 
 const db = {
   ...require('./todo')(pool),
