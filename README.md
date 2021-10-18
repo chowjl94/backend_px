@@ -3,7 +3,7 @@
 ### Project Requirements
 [Requirements](./misc/backend_capstone.pdf) please see file in misc folder 
 ### ERD Diagram
-[Diagram](./misc/ERD.png) please see file in misc folder
+![Diagram](./misc/ERD.PNG) please see file in misc folder
 
 
 ### Project Initialisation and local usage
