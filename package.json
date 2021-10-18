@@ -10,7 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "consume": "node src/consumer.js",
     "devcon": "nodemon src/consumer.js",
-    "jest:test": "jest"
+    "jest:test": "jest",
+    "cron": "node src/cron/cron.js"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +23,10 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-openapi-validator": "^4.13.2",
+    "express-ws": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "node-cron": "^3.0.0",
     "nodemon": "^2.0.13",
     "pg": "^8.7.1",
     "swagger-jsdoc": "^6.1.0",

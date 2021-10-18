@@ -1,4 +1,5 @@
 require('dotenv').config()
+
 const App = require('./app')
 const Router = require('./routes')
 const AuthMiddleware = require('./middlewares/auth')

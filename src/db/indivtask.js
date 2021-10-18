@@ -37,5 +37,13 @@ module.exports = (pool) => {
     return new Indivtask(res.rows[0])
   }
 
+  db.countIsFinished = async()=>{
+    const res = await pool.query(
+      `SELECT count(*) FROM indivtask where isFinished=$1`,
+      [true]
+    )
+    return res.rowCount
+  }
+
   return db
 }

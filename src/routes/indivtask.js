@@ -83,5 +83,11 @@ module.exports = (db) => {
     } 
   })
 
+  router.get('/count',async (req,res,next)=>{
+    const finishedCount  = await db.countIsFinished()
+    console.log('Finish count')
+    console.log(finishedCount)
+    res.status(200).json(finishedCount)
+  })
   return router
 }
