@@ -14,18 +14,3 @@ module.exports = AccessControl
 
 
 
-// `
-//   DROP TYPE IF EXISTS my_roles;
-//     CREATE TYPE my_roles AS ENUM ('creator', 'collaborator', 'read-only');
-
-//   CREATE TABLE IF NOT EXISTS access (
-//   access_id     SERIAL PRIMARY KEY,
-//   todo_id       INTEGER NOT NULL, 
-//   todo_title    VARCHAR(100) NOT NULL,
-//   user_id       INTEGER NOT NULL,
-//   nameof        VARCHAR(100) NOT NULL,
-//   role          my_roles NOT NULL
-//   FOREIGN KEY (todo_id) REFERENCES Todo(todo_id)
-//   FOREIGN KEY (user_id) REFERENCES UsersTodo(user_id)
-// )
-// `

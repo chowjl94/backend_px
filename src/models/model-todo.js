@@ -14,18 +14,3 @@ class Todo {
 
 module.exports = Todo
 
-
-// `
-// CREATE TABLE IF NOT EXISTS Todo (
-//   todo_id SERIAL PRIMARY KEY,
-//   title VARCHAR(100) NOT NULL,
-//   by VARCHAR(100) NOT NULL,
-//   uid INTEGER NOT NULL,
-//   created_on DATE NOT NULL DEFAULT CURRENT_DATE,
-//   updated_by VARCHAR(100),
-//   updated_on DATE,
-//   soft_delete BOOLEAN NOT NULL DEFAULT FALSE
-//   FOREIGN KEY (uid) REFERENCES UsersTodo(user_id)  
-
-// )
-// `

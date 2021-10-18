@@ -9,7 +9,7 @@ module.exports = (db) => {
 
     service.addAccess = async (data) => {
       console.log("received Data",data)
-      const user = await db.findUserByUsername(data.email)
+      const user = await db.findUserByUsername(data.username)
       const todolist = await db.getTodoListById(data.todo_id)
       console.log(user)
       console.log(todolist.title)

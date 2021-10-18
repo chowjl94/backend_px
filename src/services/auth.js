@@ -30,15 +30,10 @@ module.exports = (db) => {
     return jwt.sign({ user_id }, JWT_SECRET, { expiresIn: JWT_EXPIRY })
   }
 
-  // a service that takes in a username to verify if it exist
   service.registerUser = async (username,name, password) => {
-    // we check in database if the user name exists
     const user = await db.findUserByUsername(username)
-    //if exist user exist return null this function should be useless
     if (user) {
       return null
-      //else we hash the password
-      // create a new user 
     } else {
       //cryptographic function to return a haashed password, bcrypt to provide salt rounds
       const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
@@ -56,6 +51,7 @@ module.exports = (db) => {
     if (user) {
       const isValid = await bcrypt.compare(password, user.password_hash)
       if (isValid) {
+        console.log(user.user_id)
         return service.generateToken(user.user_id)
       }
     }

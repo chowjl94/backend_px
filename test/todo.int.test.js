@@ -38,7 +38,7 @@ describe('POST/todo',()=>{
                 updated_by:'tester',
                 updated_on:'2021-09-21T16:00:00.000Z',
                 }
-   it('should return 201 status',()=>{
+   it('should return 201 status', async ()=>{
      return await request(app)
      .post('/todo')
      .set("Authorisation",`Bearer ${token}`)
@@ -50,8 +50,8 @@ describe('POST/todo',()=>{
      })  
    })
    
-   it('shoud return a single todo of todo_id',()=>{
-     return request(app)
+   it('shoud return a single todo of todo_id',async ()=>{
+     return await request(app)
      .get(`/todo/${todo_id}`)
      .set("Authorisation",token)
      .expect(200)
@@ -66,8 +66,8 @@ describe('POST/todo',()=>{
      })
    })
 
-   it('should return a newly updated todo of todo_id',()=>{
-     return request(app)
+   it('should return a newly updated todo of todo_id', async ()=>{
+     return await request(app)
      .put(`/todo/${todo_id}`)
      .set("Authorisation",token)
      .send(updatedtodo)
@@ -93,7 +93,7 @@ describe('GET/todo',()=>{
   })
 
   describe('there is not todo list yet',()=>{
-    it('should return [] if no todo in db',()=>{
+    it('should return [] if no todo in db',async ()=>{
       return await request(app)
       .post('/todo')
       .set("Authorisation",token)
@@ -130,7 +130,7 @@ describe('GET/todo',()=>{
     
 
     it('should return items in the todo table',async ()=>{
-      return request(app)
+      return await request(app)
       .get('/todo')
       .set("Authorisation",token)
       .expect(200)
@@ -162,14 +162,14 @@ describe('GET/todo',()=>{
 describe('/DELETE/todo',()=>{
   beforeAll(async () =>{
     await db.clearTodo()
-    let todo_id=''
+    let todo_id
     const todo = {todo_id:1,
       title:'test',
       uid:1,
       by:'tester',
       created_on:'2021-09-20T16:00:00.000Z'}
 
-      return request(app)
+      return await request(app)
       .post('/todo')
       .set("Authorisation",token)
       .send(todo)
@@ -191,9 +191,3 @@ describe('/DELETE/todo',()=>{
     })    
 })
   
-
-
-
-
-
-

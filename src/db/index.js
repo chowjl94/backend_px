@@ -19,7 +19,7 @@ const db = {
 
 db.initialise = async () => {
   await pool.query(`
-    CREATE TABLE IF NOT EXISTS UsersTodo (
+    CREATE TABLE IF NOT EXISTS userstodo (
       user_id SERIAL PRIMARY KEY,
       username VARCHAR(100) NOT NULL,
       name VARCHAR(30) NOT NULL,
@@ -36,13 +36,12 @@ db.initialise = async () => {
       updated_by VARCHAR(100),
       updated_on DATE,
       soft_delete BOOLEAN NOT NULL DEFAULT FALSE,
-      FOREIGN KEY (uid) REFERENCES UsersTodo(user_id) on DELETE CASCADE
-
+      FOREIGN KEY (uid) REFERENCES userstodo(user_id) on DELETE CASCADE
     )
   `)
 
   await pool.query(`
-  DROP TYPE IF EXISTS my_roles;
+  DROP TYPE IF EXISTS my_roles CASCADE;
     CREATE TYPE my_roles AS ENUM ('creator', 'collaborator', 'read-only');
 
   CREATE TABLE IF NOT EXISTS access (
@@ -51,9 +50,9 @@ db.initialise = async () => {
   todo_title    VARCHAR(100) NOT NULL,
   user_id       INTEGER NOT NULL,
   nameof        VARCHAR(100) NOT NULL,
-  role          my_roles NOT NULL,
+  role          my_roles NOT NULL ,
   FOREIGN KEY (todo_id) REFERENCES Todo(todo_id) on DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES UsersTodo(user_id) on DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES userstodo(user_id) on DELETE CASCADE
 )
 `)
 
@@ -89,28 +88,23 @@ db.initialise = async () => {
   }
 
   db.clearAccess = async () => {
-    await pool.query(`
-      TRUNCATE access CASCADE;
-      ALTER SEQUENCE access_access_id_seq RESTART
-      `)
+    await pool.query('DELETE FROM access CASCADE')
+    await pool.query('ALTER SEQUENCE access_access_id_seq RESTART')
   }
 
   db.clearIndivtask = async () => {
-    await pool.query(`
-    TRUNCATE indivtask CASCADE;
-    ALTER SEQUENCE indivtask_task_id_seq RESTART`)
+    await pool.query('DELETE FROM indivtask CASCADE')
+    await pool.query('ALTER SEQUENCE indivtask_task_id_seq RESTART')
   }
 
   db.clearTodo = async () => {
-    await pool.query(`
-    TRUNCATE todo CASCADE;
-    ALTER SEQUENCE todo_todo_id_seq RESTART`)
+    await pool.query('DELETE FROM todo CASCADE')
+    await pool.query('ALTER SEQUENCE todo_todo_id_seq RESTART')
   }
 
   db.clearUserstodo = async () => {
-    await pool.query(`
-    TRUNCATE Userstodo CASCADE;
-    ALTER SEQUENCE userstodo_user_id_seq RESTART`)
+    await pool.query('DELETE FROM userstodo CASCADE;')
+    await pool.query('ALTER SEQUENCE userstodo_user_id_seq RESTART')
   }
 
 db.end = async () => {

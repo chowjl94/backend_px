@@ -27,7 +27,7 @@ describe("POST /register",()=>{
     it('should return a token',async ()=>{
         return request(app)
         .post('/register')
-        .send(username,name,password)
+        .send({username,name,password})
         .expect(200)
         .then((res)=>{
             expect(res.body.token).toBeTruthy()
@@ -37,7 +37,7 @@ describe("POST /register",()=>{
     it('should return a error 400 if user is registered',async ()=>{
         return request(app)
         .post('/register')
-        .send(username,name,password)
+        .send({username,name,password})
         .expect(400)
         .then((res)=>{
             expect(res.body.token).toBeFalsy()
@@ -56,7 +56,7 @@ describe("POST /login",()=>{
     it('should return a token if user is in db',async ()=>{
         return request(app)
         .post('/login')
-        .send(username,password)
+        .send({username,password})
         .expect(200)
         .then((res)=>{
             expect(res.body.token).toBeTruthy()
@@ -66,7 +66,7 @@ describe("POST /login",()=>{
     it('should return a error 400 is not in db',async ()=>{
         return request(app)
         .post('/login')
-        .send(username,password)
+        .send({username,password:'WRONGPASSWORD'})
         .expect(400)
         .then((res)=>{
             expect(res.body.token).toBeFalsy()
