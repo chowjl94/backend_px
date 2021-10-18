@@ -286,7 +286,7 @@ paths:
         404:
           description: todo_id of  list not found
 
-  /todos/share/{todo_id}:
+  /todo/share/{todo_id}:
     post:
       tags:
       - Todo
