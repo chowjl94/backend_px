@@ -1,26 +1,30 @@
 ## A collaborative todo list application
 
 ### Project Requirements
-[Requirements](./misc/backend_capstone.pdf)
-
+[Requirements](./misc/backend_capstone.pdf) please see file in misc folder 
 ### ERD Diagram
-[Diagram](./misc/ERD.png)
+[Diagram](./misc/ERD.png) please see file in misc folder
 
 
 ### Project Initialisation and local usage
 
+#### project setup
+
 * npm install
 * npm run db:migrate
-
+* 
+#### App usage
 for development
 * npm run dev
 * docker run -d -p 5672:5672 -p 15672:15672 rabbitmq:3-management  
 * npm run consume
+* use postman to test endpoints
 
 for production
 * npm run start
 * docker run -d -p 5672:5672 -p 15672:15672 rabbitmq:3-management  
 * npm run consume
+* swagger docs : https://backend-capstone-px.herokuapp.com/api-docs/
 
 ### Deployment on Heroku
 
