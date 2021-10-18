@@ -36,4 +36,13 @@ for production
 * swagger docs : https://backend-capstone-px.herokuapp.com/api-docs/
 
 
+##### To note:
+ integration test are partial</br>
+ 
+ cron to display number of complete task able to display , howver end point does pick up the mesages</br>
+ to see cron display </br>
+* npm run cron
+ 
+
+
 
