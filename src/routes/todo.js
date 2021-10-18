@@ -230,7 +230,7 @@ module.exports = (db,amqpService) => {
       const role =access_rights[0].role
       if (role ==='collaborator' || role=='creator'){
         const message = {
-          email:req.body.email,
+          username:req.body.username,
           name:req.body.name,
           todo_id:Number(todo_id),
           role:req.body.role
