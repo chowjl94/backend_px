@@ -42,6 +42,14 @@ for production
  cron to display number of complete task able to display , howver end point does pick up the mesages</br>
  to see cron display </br>
 * npm run cron
+
+
+
+##### additional/possible improvements
+look into setting up postman environments for testing
+Link: https://learning.postman.com/docs/sending-requests/managing-environments/
+add error handling in swagger docs
+
  
 
 
